@@ -1,0 +1,74 @@
+{% extends "layout.html" %} {% block title %} Registro Alumno {% endblock title
+%} {% block body %} {% from "_formhelpers.html" import render_field %}
+
+<div class="container login-card row col-5 p-0">
+  {% if error %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ error }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endif %}
+  <div class="justify-content-center">
+    <form class="form" action="/registro_alumno" method="POST">
+      <div class="col-auto text-center">
+        <img
+          src="{{url_for('static', filename='imagenes/Logo2.jpg') }}"
+          alt="Logo 2"
+        />
+        <h1 class="mt-0">Registro Alumno!</h1>
+      </div>
+
+      <div class="form-group d-flex justify-content-between mb-3">
+        <div class="form-floating flex-fill me-1">
+          {{ render_field(form.nombres, class='form-control') }}
+        </div>
+        <div class="form-floating flex-fill ms-1">
+          {{ render_field(form.apellidos, class='form-control') }}
+        </div>
+      </div>
+
+      <div class="form-group d-flex justify-content-between mb-3">
+        <div class="form-floating flex-fill me-1">
+          {{ render_field(form.email, class='form-control') }}
+        </div>
+
+        <div class="form-floating flex-fill ms-1">
+          {{ render_field(form.contrasena, class='form-control') }}
+        </div>
+      </div>
+
+      <div class="form-group d-flex justify-content-between mb-3">
+        <div class="form-floating flex-fill me-1">
+          {{ render_field(form.sede, class='form-select') }}
+        </div>
+
+        <div class="form-floating flex-fill ms-1">
+          {{ render_field(form.ciclo, class='form-select') }}
+        </div>
+      </div>
+
+      <div class="form-floating mb-3">
+        {{ render_field(form.carrera, class='form-select') }}
+      </div>
+
+      <div class="form-group d-flex justify-content-between mb-3">
+        <div class="form-floating flex-fill me-1">
+          {{ render_field(form.sexo, class='form-select') }}
+        </div>
+        <div class="form-floating flex-fill ms-1">
+          {{ render_field(form.edad, class='form-control') }}
+        </div>
+      </div>
+
+      <div class="form-floating mb-3">
+        <button class="btn btn-primary d-block mx-auto col-3">Registrar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

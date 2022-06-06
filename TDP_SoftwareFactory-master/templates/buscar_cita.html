@@ -1,0 +1,93 @@
+{% extends "layout_alumno.html" %} {% block title %} Buscar Cita {% endblock
+title %} {% block content %} {% with messages = get_flashed_messages() %} {% if
+messages %} {% for message in messages %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  {{ message }}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+{% endfor %} {% endif %} {% endwith %} {% if error %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  {{ error }}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+{% endif %}
+
+<h1>Registro de cita</h1>
+<h2>Para registrar una cita, por favor seleccione un horario</h2>
+<div class="row justify-content-start">
+  <form action="{{ url_for('buscar_cita') }}" method="POST">
+    <div class="form-group mb-3">
+      <label for="date">Fecha:</label>
+      <input
+        type="date"
+        id="date"
+        name="fecha"
+        min="2022-01-01"
+        max="2022-12-31"
+        value="{{fecha}}"
+      />
+    </div>
+
+    <div class="form-group mb-3 d-inline-flex col-2">
+      <label for="hora">Hora: </label>
+      <select class="form-select" name="hora" id="hora">
+        {% for key in hora_citas %} {% if key == hora %}
+        <option value="key" selected>{{ hora_citas[key] }}</option>
+        {% else %}
+        <option value="{{ key }}">{{ hora_citas[key] }}</option>
+        {% endif %} {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group mb-3">
+      <button class="btn btn-primary">Buscar</button>
+    </div>
+  </form>
+</div>
+
+{% if fecha and hora != -1 %} {% if resultado_cita %}
+<table class="table table-striped table-hover table-bordered table-sm bg-white">
+  <thead>
+    <tr>
+      <td>Psicologo</td>
+      <td>Dia de cita</td>
+      <td>Hora Inicio</td>
+      <td>Hora Fin</td>
+      <td>Acciones</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for resultado in resultado_cita %}
+    <tr>
+      <td>{{ resultado['nombres'] }}</td>
+      <td>{{ resultado['dia'].strftime('%d/%m/%Y') }}</td>
+      <td>{{ resultado['h_inicio'] }}</td>
+      <td>{{ resultado['h_fin'] }}</td>
+      <td>
+        <form action="{{ url_for('registrar_cita') }}" method="POST">
+          <input
+            type="hidden"
+            id="id_horario"
+            name="id_horario"
+            value="{{ resultado['id_horario'] }}"
+          />
+          <button class="btn btn-secondary">Reservar cita</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<h2>No se encontraron citas disponbles para los filtros seleccionados.</h2>
+{% endif %} {% endif %} {% endblock %}
